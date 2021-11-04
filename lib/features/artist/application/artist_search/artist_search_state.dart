@@ -1,4 +1,4 @@
-part of 'artist_search_cubit.dart';
+part of 'artist_search_bloc.dart';
 
 abstract class ArtistSearchState extends Equatable {
   const ArtistSearchState();

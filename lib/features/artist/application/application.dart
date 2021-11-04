@@ -1,1 +1,1 @@
-export 'artist_search/artist_search_cubit.dart';
+export 'artist_search/artist_search_bloc.dart';

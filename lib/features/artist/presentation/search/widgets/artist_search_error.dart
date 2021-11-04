@@ -12,7 +12,7 @@ class ArtistSearchErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        context.l10n.networkErrorMessage(error.key),
+        context.l10n.networkErrorMessage(error.name),
       ),
     );
   }

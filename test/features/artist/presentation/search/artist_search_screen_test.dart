@@ -8,17 +8,20 @@ import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('$ArtistSearchScreen', () {
-    late ArtistSearchCubit artistSearchCubit;
+    late ArtistSearchBloc artistSearchBloc;
 
-    setUpAll(() => registerFallbackValue(const ArtistSearchInitial()));
+    setUpAll(() {
+      registerFallbackValue(_FakeArtistSearchEvent());
+      registerFallbackValue(_FakeArtistSearchState());
+    });
 
     setUp(() {
-      artistSearchCubit = _MockArtistSearchCubit();
-      getIt.registerFactory(() => artistSearchCubit);
+      artistSearchBloc = _MockArtistSearchBloc();
+      getIt.registerFactory(() => artistSearchBloc);
     });
 
     testWidgets('renders ArtistSearchScreen', (tester) async {
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(const ArtistSearchInitial());
 
       await tester.pumpWidget(
@@ -35,10 +38,14 @@ void main() {
       expect(find.byType(ArtistSearchScreen), findsOneWidget);
       expect(find.byType(EmptyArtistsWidget), findsOneWidget);
       expect(find.byType(ArtistSearchInputField), findsOneWidget);
-      expect(find.byType(ArtistSearchButton), findsOneWidget);
     });
   });
 }
 
-class _MockArtistSearchCubit extends MockCubit<ArtistSearchState>
-    implements ArtistSearchCubit {}
+class _FakeArtistSearchEvent extends Fake implements ArtistSearchEvent {}
+
+class _FakeArtistSearchState extends Fake implements ArtistSearchState {}
+
+class _MockArtistSearchBloc
+    extends MockBloc<ArtistSearchEvent, ArtistSearchState>
+    implements ArtistSearchBloc {}

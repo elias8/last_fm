@@ -20,7 +20,7 @@ import '../../features/album/data/remote_sources/album_remote_source.dart'
     as _i16;
 import '../../features/album/data/repositories/album_repository_impl.dart'
     as _i6;
-import '../../features/artist/application/artist_search/artist_search_cubit.dart'
+import '../../features/artist/application/artist_search/artist_search_bloc.dart'
     as _i10;
 import '../../features/artist/artist.dart' as _i8;
 import '../../features/artist/data/remote_sources/artist_remote_source.dart'
@@ -47,8 +47,8 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
       () => _i7.AlbumsCubit(get<_i5.AlbumRepository>()));
   gh.factory<_i8.ArtistRepository>(
       () => _i9.ArtistRepositoryImpl(get<_i8.ArtistRemoteSource>()));
-  gh.factory<_i10.ArtistSearchCubit>(
-      () => _i10.ArtistSearchCubit(get<_i8.ArtistRepository>()));
+  gh.factory<_i10.ArtistSearchBloc>(
+      () => _i10.ArtistSearchBloc(get<_i8.ArtistRepository>()));
   await gh.lazySingletonAsync<_i11.Box<_i5.AlbumDetailDto>>(
       () => storageModule.albumBox,
       instanceName: 'albumBox',

@@ -77,13 +77,13 @@ void main() {
           'message'.hashCode);
     });
 
-    test('should key return correct value', () {
-      expect(const NetworkException.cancelled().key, 'cancelled');
-      expect(const NetworkException.connection().key, 'connection');
-      expect(const NetworkException.custom('').key, 'custom');
-      expect(const NetworkException.format().key, 'format');
-      expect(const NetworkException.server().key, 'server');
-      expect(const NetworkException.timeout().key, 'timeout');
+    test('should name return correct value', () {
+      expect(const NetworkException.cancelled().name, 'cancelled');
+      expect(const NetworkException.connection().name, 'connection');
+      expect(const NetworkException.custom('').name, 'custom');
+      expect(const NetworkException.format().name, 'format');
+      expect(const NetworkException.server().name, 'server');
+      expect(const NetworkException.timeout().name, 'timeout');
     });
   });
 }

@@ -66,7 +66,7 @@ mixin _HelperMixin<T> {
   bool get isTimeoutError => this is _NetworkTimeoutException<T>;
 
   /// Returns a short name of the error type.
-  String get key {
+  String get name {
     if (isCancellationError) {
       return 'cancelled';
     } else if (isConnectionError) {
