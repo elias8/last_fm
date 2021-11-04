@@ -1,0 +1,98 @@
+# Specify analysis options.
+#
+# See https://dash-overflow.net/articles/getting_started/ about linting
+# and why not to use other linters or linter packages.
+include: all_lint_rules.yaml
+analyzer:
+  strong-mode:
+    implicit-casts: true
+    implicit-dynamic: true
+  errors:
+    # Otherwise, cause the import of all_lint_rules to warn because of some rules conflicts.
+    # We explicitly enabled even conflicting rules and are fixing the conflict
+    # in this file
+    included_file_warning: ignore
+    # Treat missing required parameters as an error, not as a hint or a warning.
+    missing_required_param: error
+    # Treat missing returns as an error, not as a hint or a warning.
+    missing_return: error
+    # Don't assign new values to parameters of methods or functions.
+    parameter_assignments: warning
+  exclude:
+    # exclude generated files
+    - "**/*.g.dart"
+    - "**/*.config.dart"
+    - "**/*.freezed.dart"
+    - "**/router.gr.dart"
+    - "**/generated_plugin_registrant.dart"
+
+linter:
+  rules:
+    # Conflicts with `prefer_single_quotes`
+    # Single quotes are easier to type and don't compromise on readability.
+    prefer_double_quotes: false
+
+    # Incompatible with `prefer_final_locals`
+    # Having immutable local variables makes larger functions more predictable,
+    # so we will use `prefer_final_locals` instead.
+    unnecessary_final: false
+
+    # Not quite suitable for Flutter, which may have a `build` method with a single
+    # return, but that return is still complex enough that a "body" is worth it.
+    prefer_expression_function_bodies: false
+
+    # Conflicts with the convention used by flutter, which puts `Key key`
+    # and `@required Widget child` last.
+    always_put_required_named_parameters_first: false
+
+    # This project doesn't use Flutter-style todos
+    flutter_style_todos: false
+
+    # Conflicts with `prefer_relative_imports`.
+    always_use_package_imports: false
+
+    # Since this is not a library I don't prefer to document everything.
+    public_member_api_docs: false
+
+    # Will make the code verbose. Specially widgets,
+    always_specify_types: false
+
+    # This is not used by most packages and the flutter framework itself.
+    sort_constructors_first: false
+
+    # Sometimes it is necessary to define the variable type, for example,
+    # when using a `late` keyword.
+    omit_local_variable_types: false
+
+    # It is not that much useful for an app we are writing.
+    diagnostic_describe_all_properties: false
+
+    # This is just a personal preference.
+    #
+    # Conflicts with avoid_setters_without_getters.
+    use_setters_to_change_properties: false
+
+    # Will make complicated typedef easily readable.
+    avoid_private_typedef_functions: false
+
+    # Sometimes some classes contain a single method that does only one thing.
+    one_member_abstracts: false
+
+    # Classes with static members are handy for organizing mocks or fakes for testing.
+    avoid_classes_with_only_static_members: false
+
+    # This is just a personal preference. I think it makes a code less readable sometimes.
+    cascade_invocations: false
+
+    # This sometimes makes things more unclear when one line is enough.
+    always_put_control_body_on_new_line: false
+
+    # Conflicts with `parameter_assignments`.
+    prefer_final_parameters: false
+
+    # This rule forces commas even in places where it just adds extra lines that
+    # adds little value.
+    require_trailing_commas: false
+
+    # We need to override classes with `==` operators most of the time for testing purpose.
+    avoid_implementing_value_types: false

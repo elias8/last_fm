@@ -1,0 +1,1 @@
+export 'artist.dart';

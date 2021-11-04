@@ -1,0 +1,35 @@
+name: last_fm
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1.5.3
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Format
+        run: flutter format --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run Tests
+        run: |
+          pub global activate remove_from_coverage
+          export PATH=$PATH:$HOME/.pub-cache/bin
+          flutter test --no-pub --coverage --test-randomize-ordering-seed random
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.confg.dart$'
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Build APK
+        run: flutter build apk --release
