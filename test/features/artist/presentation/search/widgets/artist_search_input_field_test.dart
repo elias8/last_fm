@@ -9,16 +9,19 @@ import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('$ArtistSearchInputField', () {
-    late ArtistSearchCubit artistSearchCubit;
+    late ArtistSearchBloc artistSearchBloc;
 
-    setUpAll(() => registerFallbackValue(const ArtistSearchInitial()));
+    setUpAll(() {
+      registerFallbackValue(_FakeArtistSearchEvent());
+      registerFallbackValue(_FakeArtistSearchState());
+    });
 
-    setUp(() => artistSearchCubit = _MockArtistSearchCubit());
+    setUp(() => artistSearchBloc = _MockArtistSearchBloc());
 
-    testWidgets('renders initial state', (tester) async {
+    testWidgets('renders ArtistSearchInputField', (tester) async {
       await tester.pumpWidget(
         _MaterialTestApp(
-          searchCubit: artistSearchCubit,
+          searchBloc: artistSearchBloc,
           child: const ArtistSearchInputField(),
         ),
       );
@@ -29,13 +32,12 @@ void main() {
       expect(find.byIcon(Icons.clear), findsNothing);
     });
 
-    testWidgets(
-        'shows and passes entered text to the cubit, and shows clear '
-        'icon', (tester) async {
+    testWidgets('clear button is displayed when text is not empty',
+        (tester) async {
       const text = 'The Weekend';
       await tester.pumpWidget(
         _MaterialTestApp(
-          searchCubit: artistSearchCubit,
+          searchBloc: artistSearchBloc,
           child: const ArtistSearchInputField(),
         ),
       );
@@ -45,7 +47,6 @@ void main() {
 
       expect(find.text(text), findsOneWidget);
       expect(find.byIcon(Icons.clear), findsOneWidget);
-      verify(() => artistSearchCubit.onTextChanged(text)).called(1);
     });
 
     testWidgets('tapping clear icon clears the text and hides the icon itself',
@@ -53,19 +54,17 @@ void main() {
       const text = 'Ed Sheeran';
       await tester.pumpWidget(
         _MaterialTestApp(
-          searchCubit: artistSearchCubit,
+          searchBloc: artistSearchBloc,
           child: const ArtistSearchInputField(),
         ),
       );
 
       await tester.enterText(find.byType(TextField), text);
       await tester.pumpAndSettle();
-
       expect(find.byIcon(Icons.clear), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.clear));
       await tester.pumpAndSettle();
-
       expect(find.byIcon(Icons.clear), findsNothing);
     });
 
@@ -74,27 +73,31 @@ void main() {
       const text = 'Justin Bieber';
       await tester.pumpWidget(
         _MaterialTestApp(
-          searchCubit: artistSearchCubit,
+          searchBloc: artistSearchBloc,
           child: const ArtistSearchInputField(),
         ),
       );
 
       await tester.enterText(find.byType(TextField), text);
-      await tester.testTextInput.receiveAction(TextInputAction.search);
 
-      verify(artistSearchCubit.search).called(1);
+      verify(() => artistSearchBloc.add(const ArtistSearchTextChanged(text)))
+          .called(1);
     });
   });
 }
 
+class _FakeArtistSearchEvent extends Fake implements ArtistSearchEvent {}
+
+class _FakeArtistSearchState extends Fake implements ArtistSearchState {}
+
 class _MaterialTestApp extends StatelessWidget {
   final Widget child;
-  final ArtistSearchCubit searchCubit;
+  final ArtistSearchBloc searchBloc;
 
   const _MaterialTestApp({
     Key? key,
     required this.child,
-    required this.searchCubit,
+    required this.searchBloc,
   }) : super(key: key);
 
   @override
@@ -105,13 +108,14 @@ class _MaterialTestApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: BlocProvider<ArtistSearchCubit>.value(
-        value: searchCubit,
+      home: BlocProvider<ArtistSearchBloc>.value(
+        value: searchBloc,
         child: Scaffold(body: child),
       ),
     );
   }
 }
 
-class _MockArtistSearchCubit extends MockCubit<ArtistSearchState>
-    implements ArtistSearchCubit {}
+class _MockArtistSearchBloc
+    extends MockBloc<ArtistSearchEvent, ArtistSearchState>
+    implements ArtistSearchBloc {}

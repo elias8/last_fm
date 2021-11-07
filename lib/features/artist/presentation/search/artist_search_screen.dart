@@ -9,7 +9,6 @@ import '../../../features.dart';
 
 part 'widgets/artist_list_tile.dart';
 part 'widgets/artist_list_view.dart';
-part 'widgets/artist_search_button.dart';
 part 'widgets/artist_search_error.dart';
 part 'widgets/artist_search_input_field.dart';
 part 'widgets/artist_search_result.dart';
@@ -24,13 +23,9 @@ class ArtistSearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ArtistSearchCubit>(),
+      create: (_) => getIt<ArtistSearchBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          titleSpacing: 8,
-          title: const ArtistSearchInputField(),
-          actions: const [ArtistSearchButton()],
-        ),
+        appBar: AppBar(titleSpacing: 8, title: const ArtistSearchInputField()),
         body: const ArtistSearchResult(),
         bottomNavigationBar: bottomNavigationBar,
       ),

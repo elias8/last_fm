@@ -10,14 +10,17 @@ import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('$ArtistListTile', () {
-    late ArtistSearchCubit artistSearchCubit;
+    late ArtistSearchBloc artistSearchBloc;
     late Artist artist;
 
-    setUpAll(() => registerFallbackValue(const ArtistSearchInitial()));
+    setUpAll(() {
+      registerFallbackValue(_FakeArtistSearchEvent());
+      registerFallbackValue(_FakeArtistSearchState());
+    });
 
     setUp(() {
       artist = _MockArtist();
-      artistSearchCubit = _MockArtistSearchCubit();
+      artistSearchBloc = _MockArtistSearchBloc();
       when(() => artist.name).thenReturn('The Weeknd');
       when(() => artist.images).thenReturn(const Images());
       when(() => artist.listenersCount).thenReturn(2220184);
@@ -33,7 +36,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: BlocProvider.value(
-              value: artistSearchCubit,
+              value: artistSearchBloc,
               child: ArtistListTile(artist: artist),
             ),
           ),
@@ -56,7 +59,7 @@ void main() {
             pageBuilder: (context, state) => MaterialPage(
               child: Scaffold(
                 body: BlocProvider.value(
-                  value: artistSearchCubit,
+                  value: artistSearchBloc,
                   child: ArtistListTile(artist: artist),
                 ),
               ),
@@ -92,7 +95,12 @@ void main() {
   });
 }
 
+class _FakeArtistSearchEvent extends Fake implements ArtistSearchEvent {}
+
+class _FakeArtistSearchState extends Fake implements ArtistSearchState {}
+
 class _MockArtist extends Mock implements Artist {}
 
-class _MockArtistSearchCubit extends MockCubit<ArtistSearchState>
-    implements ArtistSearchCubit {}
+class _MockArtistSearchBloc
+    extends MockBloc<ArtistSearchEvent, ArtistSearchState>
+    implements ArtistSearchBloc {}

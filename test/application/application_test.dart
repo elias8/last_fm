@@ -8,25 +8,28 @@ import 'package:mocktail/mocktail.dart';
 void main() {
   group('$Application', () {
     late AlbumsCubit albumsCubit;
-    late ArtistSearchCubit artistSearchCubit;
+    late ArtistSearchBloc artistSearchBloc;
 
     setUpAll(() {
       registerFallbackValue(const AlbumsInitial());
-      registerFallbackValue(const ArtistSearchInitial());
+      registerFallbackValue(_FakeArtistSearchEvent());
+      registerFallbackValue(_FakeArtistSearchState());
     });
 
     setUp(() {
       albumsCubit = _MockAlbumsCubit();
-      artistSearchCubit = _MockArtistSearchCubit();
+      artistSearchBloc = _MockArtistSearchBloc();
       getIt.registerFactory(() => albumsCubit);
-      getIt.registerFactory(() => artistSearchCubit);
+      getIt.registerFactory(() => artistSearchBloc);
     });
+
+    tearDown(getIt.reset);
 
     testWidgets('renders Application and navigates to the MainScreen',
         (tester) async {
       when(() => albumsCubit.state).thenReturn(const AlbumsInitial());
       when(albumsCubit.watchAllAlbums).thenAnswer((_) => Future.value());
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(const ArtistSearchInitial());
       await tester.pumpWidget(const Application());
 
@@ -36,7 +39,11 @@ void main() {
   });
 }
 
+class _FakeArtistSearchEvent extends Fake implements ArtistSearchEvent {}
+
+class _FakeArtistSearchState extends Fake implements ArtistSearchState {}
+
 class _MockAlbumsCubit extends MockCubit<AlbumsState> implements AlbumsCubit {}
 
-class _MockArtistSearchCubit extends MockCubit<ArtistSearchState>
-    implements ArtistSearchCubit {}
+class _MockArtistSearchBloc extends MockCubit<ArtistSearchState>
+    implements ArtistSearchBloc {}

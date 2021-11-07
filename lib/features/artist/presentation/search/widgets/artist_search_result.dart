@@ -7,7 +7,7 @@ class ArtistSearchResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArtistSearchCubit, ArtistSearchState>(
+    return BlocBuilder<ArtistSearchBloc, ArtistSearchState>(
       builder: (context, state) {
         if (state is ArtistSearchLoading) {
           return const Center(child: CircularProgressIndicator());

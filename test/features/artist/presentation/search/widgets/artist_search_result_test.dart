@@ -11,14 +11,17 @@ import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('$ArtistSearchResult', () {
-    late ArtistSearchCubit artistSearchCubit;
+    late ArtistSearchBloc artistSearchBloc;
 
-    setUpAll(() => registerFallbackValue(const ArtistSearchInitial()));
+    setUpAll(() {
+      registerFallbackValue(_FakeArtistSearchEvent());
+      registerFallbackValue(_FakeArtistSearchState());
+    });
 
-    setUp(() => artistSearchCubit = _MockArtistSearchCubit());
+    setUp(() => artistSearchBloc = _MockArtistSearchBloc());
 
     testWidgets('renders ArtistSearchResult at initial state', (tester) async {
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(const ArtistSearchInitial());
       await tester.pumpWidget(
         MaterialApp(
@@ -29,7 +32,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: BlocProvider.value(
-              value: artistSearchCubit,
+              value: artistSearchBloc,
               child: const ArtistSearchResult(),
             ),
           ),
@@ -45,7 +48,7 @@ void main() {
     });
 
     testWidgets('shows progress indicator at loading state', (tester) async {
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(const ArtistSearchLoading());
       await tester.pumpWidget(
         MaterialApp(
@@ -56,7 +59,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: BlocProvider.value(
-              value: artistSearchCubit,
+              value: artistSearchBloc,
               child: const ArtistSearchResult(),
             ),
           ),
@@ -67,7 +70,7 @@ void main() {
     });
 
     testWidgets('shows artist list at data loaded state', (tester) async {
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(ArtistSearchLoaded(right([])));
       await tester.pumpWidget(
         MaterialApp(
@@ -78,7 +81,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: BlocProvider.value(
-              value: artistSearchCubit,
+              value: artistSearchBloc,
               child: const ArtistSearchResult(),
             ),
           ),
@@ -90,7 +93,7 @@ void main() {
 
     testWidgets('shows error message at error loaded state', (tester) async {
       const response = NetworkException.cancelled();
-      when(() => artistSearchCubit.state)
+      when(() => artistSearchBloc.state)
           .thenReturn(ArtistSearchLoaded(left(response)));
       await tester.pumpWidget(
         MaterialApp(
@@ -101,7 +104,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: BlocProvider.value(
-              value: artistSearchCubit,
+              value: artistSearchBloc,
               child: const ArtistSearchResult(),
             ),
           ),
@@ -116,5 +119,10 @@ void main() {
   });
 }
 
-class _MockArtistSearchCubit extends MockCubit<ArtistSearchState>
-    implements ArtistSearchCubit {}
+class _FakeArtistSearchEvent extends Fake implements ArtistSearchEvent {}
+
+class _FakeArtistSearchState extends Fake implements ArtistSearchState {}
+
+class _MockArtistSearchBloc
+    extends MockBloc<ArtistSearchEvent, ArtistSearchState>
+    implements ArtistSearchBloc {}

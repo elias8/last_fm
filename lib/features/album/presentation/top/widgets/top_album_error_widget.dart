@@ -22,7 +22,7 @@ class TopAlbumsErrorWidget extends StatelessWidget {
           Text(
             error.isCustomError
                 ? context.l10n.artistNotFound
-                : context.l10n.networkErrorMessage(error.key),
+                : context.l10n.networkErrorMessage(error.name),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline4?.copyWith(
                   fontWeight: FontWeight.w600,

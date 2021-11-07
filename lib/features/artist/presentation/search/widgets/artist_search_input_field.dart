@@ -9,14 +9,15 @@ class ArtistSearchInputField extends StatefulWidget {
 }
 
 class _ArtistSearchInputFieldState extends State<ArtistSearchInputField> {
-  bool _showClearIconButton = false;
   late final TextEditingController _controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      autocorrect: false,
       controller: _controller,
-      onSubmitted: _onSubmitted,
+      onChanged: _onTextChanged,
+      onSubmitted: _onTextChanged,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.search,
       textCapitalization: TextCapitalization.words,
@@ -26,12 +27,16 @@ class _ArtistSearchInputFieldState extends State<ArtistSearchInputField> {
         hintText: context.l10n.searchArtist,
         prefixIcon: const Icon(Icons.search),
         constraints: const BoxConstraints.tightFor(height: 36),
-        suffixIcon: _showClearIconButton
-            ? GestureDetector(
-                onTap: _controller.clear,
-                child: const Icon(Icons.clear),
-              )
-            : null,
+        suffixIcon: AnimatedBuilder(
+          animation: _controller,
+          child: GestureDetector(
+            onTap: _onClearText,
+            child: const Icon(Icons.clear),
+          ),
+          builder: (_, child) {
+            return _controller.text.isNotEmpty ? child! : const SizedBox();
+          },
+        ),
       ),
     );
   }
@@ -46,21 +51,15 @@ class _ArtistSearchInputFieldState extends State<ArtistSearchInputField> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _controller.addListener(_onTextChanged);
   }
 
-  void _onSubmitted(String text) {
-    final searchCubit = context.read<ArtistSearchCubit>();
-    searchCubit.onTextChanged(text);
-    searchCubit.search();
+  void _onClearText() {
+    _controller.text = '';
+    _onTextChanged('');
   }
 
-  void _onTextChanged() {
-    final text = _controller.text;
-    context.read<ArtistSearchCubit>().onTextChanged(text);
-    if (_showClearIconButton != text.isNotEmpty) {
-      _showClearIconButton = text.isNotEmpty;
-      setState(() {});
-    }
+  void _onTextChanged(String text) {
+    final searchCubit = context.read<ArtistSearchBloc>();
+    searchCubit.add(ArtistSearchTextChanged(text));
   }
 }
