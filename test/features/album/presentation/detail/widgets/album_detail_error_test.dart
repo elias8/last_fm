@@ -28,7 +28,7 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           home: AlbumDetailErrorWidget(
-            error: const NetworkException.custom(
+            error: const NetworkException.api(
               AlbumDetailError.albumNotFound,
             ),
             query: query,

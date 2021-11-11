@@ -46,7 +46,7 @@ void main() {
 
         expect(
           response,
-          left(const NetworkException.custom(AlbumDetailError.albumNotFound)),
+          left(const NetworkException.api(AlbumDetailError.albumNotFound)),
         );
       });
     });
@@ -76,7 +76,7 @@ void main() {
 
         expect(
           response,
-          left(const NetworkException.custom(TopAlbumsError.artistNotFound)),
+          left(const NetworkException.api(TopAlbumsError.artistNotFound)),
         );
       });
 

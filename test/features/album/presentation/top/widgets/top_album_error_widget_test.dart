@@ -28,7 +28,7 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           home: TopAlbumsErrorWidget(
-            error: NetworkException.custom(TopAlbumsError.artistNotFound),
+            error: NetworkException.api(TopAlbumsError.artistNotFound),
             artistName: artistName,
           ),
         ),
