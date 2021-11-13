@@ -91,7 +91,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   build_runner_core:
     dependency: transitive
     description:
@@ -210,7 +210,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   dart_style:
     dependency: transitive
     description:
@@ -285,7 +285,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.2"
+    version: "7.3.3"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -370,7 +370,7 @@ packages:
       name: go_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.6"
   graphs:
     dependency: transitive
     description:

@@ -73,9 +73,8 @@ void main() {
         );
         expect(
           _FakeDioError(DioErrorType.response, null, _FakeResponse(404))
-              .toNetWorkError(
-                  onResponse: (_) => const NetworkException.custom(''))
-              .isCustomError,
+              .toNetWorkError(onResponse: (_) => const NetworkException.api(''))
+              .isApiError,
           isTrue,
         );
         expect(

@@ -1,4 +1,4 @@
-name: last_fm
+name: build
 
 on: [ push, pull_request ]
 

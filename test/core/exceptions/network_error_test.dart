@@ -6,7 +6,7 @@ void main() {
     test('should return true when type matches', () {
       expect(const NetworkException.cancelled().isCancellationError, isTrue);
       expect(const NetworkException.connection().isConnectionError, isTrue);
-      expect(const NetworkException.custom(0).isCustomError, isTrue);
+      expect(const NetworkException.api(0).isApiError, isTrue);
       expect(const NetworkException.server().isServerError, isTrue);
       expect(const NetworkException.timeout().isTimeoutError, isTrue);
       expect(const NetworkException.format().isFormatException, isTrue);
@@ -22,8 +22,8 @@ void main() {
         '_InternetConnectionException<String>()',
       );
       expect(
-        const NetworkException.custom('message').toString(),
-        '_NetworkCustomException<String>(message)',
+        const NetworkException.api('message').toString(),
+        '_ApiException<String>(message)',
       );
       expect(
         const NetworkException.server().toString(),
@@ -52,35 +52,35 @@ void main() {
         isFalse,
       );
       expect(
-        const NetworkException.custom('message') ==
+        const NetworkException.api('message') ==
             const NetworkException.connection(),
         isFalse,
       );
       expect(
-        const NetworkException.custom('message') ==
-            const NetworkException.custom('other'),
+        const NetworkException.api('message') ==
+            const NetworkException.api('other'),
         isFalse,
       );
       expect(
-        const NetworkException.custom('message') ==
-            const NetworkException.custom('message'),
+        const NetworkException.api('message') ==
+            const NetworkException.api('message'),
         isTrue,
       );
       expect(
         // ignore: prefer_const_constructors
-        NetworkException.custom('message') ==
+        NetworkException.api('message') ==
             // ignore: prefer_const_constructors
-            NetworkException.custom('message'),
+            NetworkException.api('message'),
         isTrue,
       );
-      expect(const NetworkException.custom('message').hashCode,
-          'message'.hashCode);
+      expect(
+          const NetworkException.api('message').hashCode, 'message'.hashCode);
     });
 
     test('should name return correct value', () {
+      expect(const NetworkException.api('').name, 'api');
       expect(const NetworkException.cancelled().name, 'cancelled');
       expect(const NetworkException.connection().name, 'connection');
-      expect(const NetworkException.custom('').name, 'custom');
       expect(const NetworkException.format().name, 'format');
       expect(const NetworkException.server().name, 'server');
       expect(const NetworkException.timeout().name, 'timeout');

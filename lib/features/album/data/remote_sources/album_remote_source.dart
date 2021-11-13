@@ -53,9 +53,7 @@ class AlbumRemoteSourceImpl implements AlbumRemoteSource {
         final List albums = topAlbums['album'];
         return right(albums.map((json) => AlbumDto.fromJson(json)).toList());
       } else {
-        return const Left(
-          NetworkException.custom(TopAlbumsError.artistNotFound),
-        );
+        return const Left(NetworkException.api(TopAlbumsError.artistNotFound));
       }
     } on DioError catch (error) {
       return left(error.toNetWorkErrorOrThrow());
@@ -64,7 +62,7 @@ class AlbumRemoteSourceImpl implements AlbumRemoteSource {
 
   AlbumDetailNetworkError _mapAlbumDetailResponseError(Response response) {
     return response.statusCode == 404
-        ? const NetworkException.custom(AlbumDetailError.albumNotFound)
+        ? const NetworkException.api(AlbumDetailError.albumNotFound)
         : const NetworkException.server();
   }
 }

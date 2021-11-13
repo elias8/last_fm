@@ -1,6 +1,9 @@
 # last_fm
 
+[![example workflow](https://github.com/elias8/last_fm/actions/workflows/workflow.yml/badge.svg)](https://github.com/Elias8/last_fm/actions/workflows/workflow.yml)
 [![codecov][coverage_link]](https://codecov.io/gh/Elias8/last_fm)
+[![Flutter version](https://img.shields.io/badge/flutter-v2.5.3-blue?logo=flutter)](https://flutter.dev/docs/development/tools/sdk/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
 A simple app to demonstrate a testable, maintainable, and scalable architecture for flutter. flutter_bloc, hive, and
 REST API are some of the tech stacks used in this project.
@@ -8,14 +11,12 @@ REST API are some of the tech stacks used in this project.
 ---
 
 ## ScreenShots 📷
-![albums](screenshot/albums.png)             |  ![artist](screenshot/artist_search.png) 
+
+![albums](screenshot/albums.png)             |  ![artist](screenshot/artist_search.png)
 ---------------------------------------------|--------------------------------------------------
-![top_albums](screenshot/top_albums.png)     |  ![album_detail](screenshot/album_detail.png)    
+![top_albums](screenshot/top_albums.png)     |  ![album_detail](screenshot/album_detail.png)
 
-
-
-
-## Getting Started
+## Getting Started 🚀
 
 For the app to work, you need to provide your own [last.fm][lastfm_link] API key by issuing [here][lastfm_auth_link].
 
@@ -31,7 +32,7 @@ $ flutter build --dart-define=API_KEY=PUT_YOUR_API_KEY_HERE
 
 ---
 
-## Running Tests
+## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
 
@@ -61,7 +62,7 @@ $ open coverage/index.html
 
 ---
 
-## Working with Translations
+## Working with Translations 🌐
 
 This project relies on [flutter_localizations][flutter_localizations_link] and follows
 the [official internationalization guide for Flutter][internationalization_link].
@@ -161,15 +162,65 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
 }
 ```
 
+## Credit 🙏
+
+Thanks to all the people who created and are maintaining these awesome packages used in this project.
+
+Maintainers                                      | Packages
+-------------------------------------------------|-------------------------------------------
+[Felix Angelov](https://github.com/felangel)     | [bloc & flutter_bloc][bloc_link], [equatable][equatable_link], [mocktail][mocktail_link]
+[Thomas Burkhart](https://github.com/escamoteur) | [get_it][get_it_link]
+[Milad akarie](https://github.com/Milad-Akarie)  | [injectable][injectable_link]
+[Chris Sells](https://github.com/csells)         | [go_router][go_router_link]
+[Very Good Ventures][vgv_link]                   | For their awesome README [template][very_good_cli_link]
+And everyone else                                | [dio][dio_link], [hive][hive_link], and many more...
+
+## Features and bugs
+
+You can file features requests (not intending to add new features, but I will try to add based on requests), bugs or any
+questions at the [issue tracker][issue_tracker_link]. 
+
+And don't forget to give a star if you find this repo helpful, or
+you have learned something from it!
+
+### Maintainers
+
+* [Elias Andualem](https://github.com/elias8)
+
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 
 [coverage_link]: https://codecov.io/gh/Elias8/last_fm/branch/main/graph/badge.svg?token=H09CZDS7P0
 
-
 [lastfm_link]: https://www.last.fm
 
 [lastfm_auth_link]: https://www.last.fm/api/authentication
 
 [lcov_link]: https://github.com/linux-test-project/lcov
+
+[issue_tracker_link]: https://github.com/Elias8/last_fm/issues
+
+[comment]: <> (Packages)
+
+[vgv_link]: https://github.com/VeryGoodOpenSource
+
+[bloc_link]: https://github.com/felangel/bloc
+
+[equatable_link]: https://github.com/felangel/equatable
+
+[mocktail_link]: https://github.com/felangel/mocktail
+
+[get_it_link]: https://github.com/fluttercommunity/get_it
+
+[injectable_link]: https://github.com/Milad-Akarie/injectable
+
+[go_router_link]: https://github.com/csells/go_router
+
+[very_good_cli_link]: https://github.com/verygoodopensource/very_good_cli
+
+[dio_link]: https://github.com/flutterchina/dio
+
+[hive_link]: https://github.com/hivedb/hive
+
+

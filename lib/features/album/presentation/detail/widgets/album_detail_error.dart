@@ -22,7 +22,7 @@ class AlbumDetailErrorWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              error.isCustomError
+              error.isApiError
                   ? context.l10n.albumNotFound
                   : context.l10n.networkErrorMessage(error.name),
               textAlign: TextAlign.center,
@@ -31,7 +31,7 @@ class AlbumDetailErrorWidget extends StatelessWidget {
                     fontSize: 18,
                   ),
             ),
-            if (!error.isCustomError) ...[
+            if (!error.isApiError) ...[
               const SizedBox(height: 16),
               Center(
                 child: TextButton(
