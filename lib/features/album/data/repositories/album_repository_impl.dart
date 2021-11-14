@@ -25,23 +25,20 @@ class AlbumRepositoryImpl implements AlbumRepository {
   Future<AlbumDetailResponse> findAlbumDetail(AlbumDetailQuery query) async {
     final queryDto = AlbumDetailQueryDto.fromModel(query);
     final album = await _albumLocalSource.findAlbumDetail(queryDto);
-    return album == null
-        ? await _findAlbumDetailFromRemoteSource(queryDto)
-        : right(album.toEntity());
+    if (album == null) return _findAlbumDetailFromRemoteSource(queryDto);
+    return right(album.toEntity());
   }
 
   @override
-  Future<AlbumDetails> findAll() {
-    return _albumLocalSource
-        .findAllAlbums()
-        .then((storedAlbums) => storedAlbums.toEntities());
+  Future<AlbumDetails> findAll() async {
+    final storedAlbums = await _albumLocalSource.findAllAlbums();
+    return storedAlbums.toEntities();
   }
 
   @override
-  Future<TopAlbumsResponse> findTopAlbumsByArtistName(String name) {
-    return _albumRemoteSource
-        .findTopAlbumsByArtistName(name)
-        .then((response) => response.map((albums) => albums.toEntities()));
+  Future<TopAlbumsResponse> findTopAlbumsByArtistName(String name) async {
+    final response = await _albumRemoteSource.findTopAlbumsByArtistName(name);
+    return response.map((albums) => albums.toEntities());
   }
 
   @override
@@ -52,15 +49,13 @@ class AlbumRepositoryImpl implements AlbumRepository {
   }
 
   Future<AlbumDetailResponse> _findAlbumDetailFromRemoteSource(
-      AlbumDetailQueryDto query) {
-    return _albumRemoteSource
-        .findAlbumDetail(query)
-        .then((response) => response.fold(left, _saveAlbum));
+      AlbumDetailQueryDto query) async {
+    final response = await _albumRemoteSource.findAlbumDetail(query);
+    return response.fold(left, _saveAlbum);
   }
 
-  FutureOr<AlbumDetailResponse> _saveAlbum(AlbumDetailDto album) {
-    return _albumLocalSource
-        .saveAlbum(album)
-        .then((savedAlbum) => right(savedAlbum.toEntity()));
+  FutureOr<AlbumDetailResponse> _saveAlbum(AlbumDetailDto album) async {
+    final savedAlbum = await _albumLocalSource.saveAlbum(album);
+    return right(savedAlbum.toEntity());
   }
 }

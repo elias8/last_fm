@@ -16,8 +16,6 @@ EventTransformer<Event> _debounce<Event>() {
   return (events, mapper) => events.debounce(_duration).switchMap(mapper);
 }
 
-typedef _Emitter = Emitter<ArtistSearchState>;
-
 @injectable
 class ArtistSearchBloc extends Bloc<ArtistSearchEvent, ArtistSearchState> {
   final ArtistRepository _artistRepository;
@@ -27,16 +25,17 @@ class ArtistSearchBloc extends Bloc<ArtistSearchEvent, ArtistSearchState> {
     on<ArtistSearchTextChanged>(_onTextChanged, transformer: _debounce());
   }
 
-  FutureOr<void> _onTextChanged(ArtistSearchTextChanged event, _Emitter emit) {
+  FutureOr<void> _onTextChanged(
+    ArtistSearchTextChanged event,
+    Emitter<ArtistSearchState> emit,
+  ) async {
     final artistName = event.text.trim();
     if (artistName.isEmpty) {
       emit(const ArtistSearchLoaded(Right([])));
     } else {
       emit(const ArtistSearchLoading());
-      return _artistRepository
-          .findByName(artistName)
-          .then((response) => ArtistSearchLoaded(response))
-          .then(emit);
+      final response = await _artistRepository.findByName(artistName);
+      emit(ArtistSearchLoaded(response));
     }
   }
 }
