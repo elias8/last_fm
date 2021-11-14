@@ -11,9 +11,8 @@ class ArtistRepositoryImpl implements ArtistRepository {
   const ArtistRepositoryImpl(this._artistRemoteSource);
 
   @override
-  Future<ArtistSearchResponse> findByName(String name) {
-    return _artistRemoteSource
-        .findByName(name)
-        .then((response) => response.map((it) => it.toArtists()));
+  Future<ArtistSearchResponse> findByName(String name) async {
+    final response = await _artistRemoteSource.findByName(name);
+    return response.map((it) => it.toEntities());
   }
 }

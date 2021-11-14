@@ -24,11 +24,9 @@ class AlbumsCubit extends Cubit<AlbumsState> {
 
   /// Removes all [Albums] from the [_albumRepository] and emits
   /// [AllAlbumsLoaded] state with an empty albums list.
-  Future<void> deleteAllAlbums() {
-    return _albumRepository
-        .deleteAllAlbums()
-        .then((_) => const AllAlbumsLoaded([]))
-        .then(emit);
+  Future<void> deleteAllAlbums() async {
+    await _albumRepository.deleteAllAlbums();
+    emit(const AllAlbumsLoaded([]));
   }
 
   /// Gets all [Albums] from the [_albumRepository] and emits [AllAlbumsLoaded]
@@ -37,10 +35,8 @@ class AlbumsCubit extends Cubit<AlbumsState> {
   /// Also, [AlbumsLoading] state will be emitted while the albums are loaded.
   Future<void> loadAllAlbums() async {
     emit(const AlbumsLoading());
-    return _albumRepository
-        .findAll()
-        .then((albums) => AllAlbumsLoaded(albums))
-        .then(emit);
+    final response = await _albumRepository.findAll();
+    emit(AllAlbumsLoaded(response));
   }
 
   /// Gets top [Albums] of an artist with the given [name] from the
@@ -51,10 +47,8 @@ class AlbumsCubit extends Cubit<AlbumsState> {
   /// loaded.
   Future<void> loadTopAlbumsByArtistName(String name) async {
     emit(const AlbumsLoading());
-    return _albumRepository
-        .findTopAlbumsByArtistName(name)
-        .then((response) => TopAlbumsLoaded(response))
-        .then(emit);
+    final response = await _albumRepository.findTopAlbumsByArtistName(name);
+    emit(TopAlbumsLoaded(response));
   }
 
   /// Watches for any updated [AlbumDetails] from [_albumRepository] and

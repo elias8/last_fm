@@ -31,16 +31,13 @@ class AlbumDetailCubit extends Cubit<AlbumDetailState> {
   /// [AlbumDetailLoaded] state with the albums.
   Future<void> loadAlbumDetail(AlbumDetailQuery query) async {
     emit(const AlbumDetailLoading());
-    return _albumRepository
-        .findAlbumDetail(query)
-        .then((response) => AlbumDetailLoaded(response))
-        .then(emit);
+    final response = await _albumRepository.findAlbumDetail(query);
+    emit(AlbumDetailLoaded(response));
   }
 
-  Future<void> _deleteAlbum(AlbumDetail album) {
-    return _albumRepository
-        .deleteAlbum(AlbumDetailQuery.fromAlbum(album))
-        .then((_) => const AlbumDetailDeleted())
-        .then(emit);
+  Future<void> _deleteAlbum(AlbumDetail album) async {
+    final request = AlbumDetailQuery.fromAlbum(album);
+    await _albumRepository.deleteAlbum(request);
+    emit(const AlbumDetailDeleted());
   }
 }

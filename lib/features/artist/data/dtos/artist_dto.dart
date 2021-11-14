@@ -32,5 +32,5 @@ class ArtistDto {
 }
 
 extension ArtistDtoListX on ArtistDtoList {
-  Artists toArtists() => map((artist) => artist.toEntity()).toList();
+  Artists toEntities() => map((artist) => artist.toEntity()).toList();
 }
