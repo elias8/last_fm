@@ -58,9 +58,7 @@ class AlbumsCubit extends Cubit<AlbumsState> {
   /// [loadAllAlbums] method.
   Future<void> watchAllAlbums() async {
     await loadAllAlbums();
-    _streamSubscription ??= _albumRepository
-        .watchAllAlbums()
-        .map((albums) => AllAlbumsLoaded(albums))
-        .listen(emit);
+    _streamSubscription ??=
+        _albumRepository.watchAllAlbums().map(AllAlbumsLoaded.new).listen(emit);
   }
 }

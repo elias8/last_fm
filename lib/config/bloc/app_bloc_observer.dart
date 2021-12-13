@@ -2,10 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
-/// Sets a global bloc observer for logging bloc behaviour.
-void setBlocObserver() => Bloc.observer = _AppBlocObserver();
-
-class _AppBlocObserver extends BlocObserver {
+class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);

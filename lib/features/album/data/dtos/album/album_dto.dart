@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../shared/shared.dart';
 import '../../../album.dart';
-import '../artist_info/artist_info_dto.dart';
 
 part 'album_dto.g.dart';
 

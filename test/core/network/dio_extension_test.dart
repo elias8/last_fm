@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/core/core.dart';
-import 'package:last_fm/core/exceptions/app_exception.dart';
 
 void main() {
   group('DioErrorExtension', () {

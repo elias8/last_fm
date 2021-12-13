@@ -50,8 +50,8 @@ class AlbumRemoteSourceImpl implements AlbumRemoteSource {
       final Map data = response.data!;
       if (data.containsKey('topalbums')) {
         final Map topAlbums = data['topalbums'];
-        final List albums = topAlbums['album'];
-        return right(albums.map((json) => AlbumDto.fromJson(json)).toList());
+        final albums = List<Map<String, dynamic>>.from(topAlbums['album']);
+        return right(albums.map(AlbumDto.fromJson).toList());
       } else {
         return const Left(NetworkException.api(TopAlbumsError.artistNotFound));
       }
