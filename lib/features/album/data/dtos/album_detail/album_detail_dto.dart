@@ -68,8 +68,8 @@ class TagsConverter implements JsonConverter<List<AlbumTagDto>, Object?> {
   List<AlbumTagDto> fromJson(Object? json) {
     if (json is Map) {
       final tags = json['tag'];
-      if (tags is List) {
-        return tags.map((e) => AlbumTagDto.fromJson(e)).toList();
+      if (tags is List<Map<String, dynamic>>) {
+        return tags.map(AlbumTagDto.fromJson).toList();
       } else if (tags is Map<String, dynamic>) {
         return [AlbumTagDto.fromJson(tags)];
       }
@@ -93,7 +93,8 @@ class TracksConverter implements JsonConverter<List<TrackDto>, Object?> {
       if (track is Map<String, dynamic>) {
         return [TrackDto.fromJson(track)];
       } else if (track is List) {
-        return track.map((e) => TrackDto.fromJson(e)).toList();
+        final list = List<Map<String, dynamic>>.from(track);
+        return list.map(TrackDto.fromJson).toList();
       }
     }
     return const [];

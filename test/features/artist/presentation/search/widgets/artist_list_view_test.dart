@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
 import 'package:last_fm/features/features.dart';
-import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('$ArtistListView', () {

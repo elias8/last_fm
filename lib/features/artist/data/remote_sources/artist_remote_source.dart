@@ -28,8 +28,8 @@ class ArtistRemoteSourceImpl implements ArtistRemoteSource {
       final response = await _dio.get<Map>('/', queryParameters: query);
       final Map results = response.data!['results'];
       final Map artistMatches = results['artistmatches'];
-      final List matches = artistMatches['artist'];
-      final artists = matches.map((json) => ArtistDto.fromJson(json)).toList();
+      final matches = List<Map<String, dynamic>>.from(artistMatches['artist']);
+      final artists = matches.map(ArtistDto.fromJson).toList();
       return right(artists);
     } on DioError catch (error) {
       return left(error.toNetWorkErrorOrThrow());
