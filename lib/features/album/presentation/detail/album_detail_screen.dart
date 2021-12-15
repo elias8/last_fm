@@ -30,13 +30,13 @@ class AlbumDetailScreen extends StatelessWidget {
         child: BlocConsumer<AlbumDetailCubit, AlbumDetailState>(
           listener: _cubitListener,
           builder: (context, state) {
-            if (state is AlbumDetailLoaded) {
-              return state.response.fold(
-                (l) => AlbumDetailErrorWidget(error: l, query: query),
-                (r) => AlbumDetailWidget(album: r),
-              );
+            if (state is AlbumDetailSuccess) {
+              return AlbumDetailWidget(album: state.album);
+            } else if (state is AlbumDetailFailure) {
+              return AlbumDetailErrorWidget(error: state.error, query: query);
+            } else {
+              return const AlbumDetailProgressIndicator();
             }
-            return const AlbumDetailProgressIndicator();
           },
         ),
       ),

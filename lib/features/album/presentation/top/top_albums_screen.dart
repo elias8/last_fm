@@ -26,13 +26,16 @@ class TopAlbumsScreen extends StatelessWidget {
         appBar: AppBar(title: Text(artistName)),
         body: BlocBuilder<AlbumsCubit, AlbumsState>(
           builder: (_, state) {
-            if (state is TopAlbumsLoaded) {
-              return state.response.fold(
-                (l) => TopAlbumsErrorWidget(error: l, artistName: artistName),
-                (r) => TopAlbumsListView(albums: r),
+            if (state is TopAlbumsSuccess) {
+              return TopAlbumsListView(albums: state.albums);
+            } else if (state is TopAlbumsFailure) {
+              return TopAlbumsErrorWidget(
+                error: state.error,
+                artistName: artistName,
               );
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
-            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -42,7 +43,7 @@ void main() {
       const artistName = 'name';
 
       blocTest<AlbumsCubit, AlbumsState>(
-        'should emit [ AlbumsLoading, TopAlbumsLoaded ] when top albums are '
+        'should emit [ AlbumsLoading, TopAlbumsSuccess ] when top albums are '
         'loaded',
         setUp: () {
           when(() => albumRepository.findTopAlbumsByArtistName(artistName))
@@ -50,7 +51,22 @@ void main() {
         },
         build: () => albumsCubit,
         act: (cubit) => cubit.loadTopAlbumsByArtistName(artistName),
-        expect: () => const [AlbumsLoading(), TopAlbumsLoaded(Right([]))],
+        expect: () => const [AlbumsLoading(), TopAlbumsSuccess([])],
+      );
+
+      blocTest<AlbumsCubit, AlbumsState>(
+        'should emit [ AlbumsLoading, TopAlbumsFailure ] when error is '
+        'occurred',
+        setUp: () {
+          when(() => albumRepository.findTopAlbumsByArtistName(artistName))
+              .thenAnswer((_) async => const Left(NetworkException.timeout()));
+        },
+        build: () => albumsCubit,
+        act: (cubit) => cubit.loadTopAlbumsByArtistName(artistName),
+        expect: () => const [
+          AlbumsLoading(),
+          TopAlbumsFailure(NetworkException.timeout()),
+        ],
       );
     });
 

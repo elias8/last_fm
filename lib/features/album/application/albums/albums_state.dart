@@ -15,13 +15,22 @@ class AlbumsLoading extends AlbumsState {
   const AlbumsLoading();
 }
 
-class TopAlbumsLoaded extends AlbumsState {
-  final TopAlbumsResponse response;
+class TopAlbumsSuccess extends AlbumsState {
+  final Albums albums;
 
-  const TopAlbumsLoaded(this.response);
+  const TopAlbumsSuccess(this.albums);
 
   @override
-  List<Object?> get props => [response];
+  List<Object?> get props => [albums];
+}
+
+class TopAlbumsFailure extends AlbumsState {
+  final TopAlbumsNetworkError error;
+
+  const TopAlbumsFailure(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }
 
 class AllAlbumsLoaded extends AlbumsState {

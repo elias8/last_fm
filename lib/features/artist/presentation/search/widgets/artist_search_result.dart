@@ -11,11 +11,10 @@ class ArtistSearchResult extends StatelessWidget {
       builder: (context, state) {
         if (state is ArtistSearchLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is ArtistSearchLoaded) {
-          return state.response.fold(
-            (l) => ArtistSearchErrorWidget(error: l),
-            (r) => ArtistListView(artists: r),
-          );
+        } else if (state is ArtistSearchSuccess) {
+          return ArtistListView(artists: state.artists);
+        } else if (state is ArtistSearchFailure) {
+          return ArtistSearchErrorWidget(error: state.error);
         } else {
           return const EmptyArtistsWidget();
         }

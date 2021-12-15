@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -71,7 +70,7 @@ void main() {
 
     testWidgets('shows artist list at data loaded state', (tester) async {
       when(() => artistSearchBloc.state)
-          .thenReturn(ArtistSearchLoaded(right([])));
+          .thenReturn(const ArtistSearchSuccess([]));
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: const [
@@ -94,7 +93,7 @@ void main() {
     testWidgets('shows error message at error loaded state', (tester) async {
       const response = NetworkException.cancelled();
       when(() => artistSearchBloc.state)
-          .thenReturn(ArtistSearchLoaded(left(response)));
+          .thenReturn(const ArtistSearchFailure(response));
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: const [

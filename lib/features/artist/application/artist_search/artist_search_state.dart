@@ -15,11 +15,20 @@ class ArtistSearchLoading extends ArtistSearchState {
   const ArtistSearchLoading();
 }
 
-class ArtistSearchLoaded extends ArtistSearchState {
-  final ArtistSearchResponse response;
+class ArtistSearchSuccess extends ArtistSearchState {
+  final Artists artists;
 
-  const ArtistSearchLoaded(this.response);
+  const ArtistSearchSuccess(this.artists);
 
   @override
-  List<Object?> get props => [response];
+  List<Object?> get props => artists;
+}
+
+class ArtistSearchFailure extends ArtistSearchState {
+  final NetworkException<void> error;
+
+  const ArtistSearchFailure(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }

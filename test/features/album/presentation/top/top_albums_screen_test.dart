@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -42,7 +41,7 @@ void main() {
 
     testWidgets('shows TopAlbumsListView when response is loaded with data',
         (tester) async {
-      when(() => albumsCubit.state).thenReturn(TopAlbumsLoaded(right([])));
+      when(() => albumsCubit.state).thenReturn(const TopAlbumsSuccess([]));
       when(() => albumsCubit.loadTopAlbumsByArtistName(artistName))
           .thenAnswer((_) => Future.value());
       await tester.pumpWidget(
@@ -66,7 +65,7 @@ void main() {
 
     testWidgets('shows TopAlbumsErrorWidget when response is loaded with error',
         (tester) async {
-      final state = TopAlbumsLoaded(left(const NetworkException.connection()));
+      const state = TopAlbumsFailure(NetworkException.connection());
       when(() => albumsCubit.state).thenReturn(state);
       when(() => albumsCubit.loadTopAlbumsByArtistName(artistName))
           .thenAnswer((_) => Future.value());

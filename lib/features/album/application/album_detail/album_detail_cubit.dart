@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,22 +16,21 @@ class AlbumDetailCubit extends Cubit<AlbumDetailState> {
   /// Deletes an album from [_albumRepository].
   ///
   /// Before this method is called, the current [state] has to be
-  /// [AlbumDetailLoaded]. Otherwise, calling this method does nothing.
+  /// [AlbumDetailSuccess]. Otherwise, calling this method does nothing.
   Future<void> deleteAlbum() async {
-    if (state is AlbumDetailLoaded) {
-      final response = (state as AlbumDetailLoaded).response;
-      if (response is Right<AlbumDetailNetworkError, AlbumDetail>) {
-        await _deleteAlbum(response.value);
-      }
+    final currentState = state;
+    if (currentState is AlbumDetailSuccess) {
+      await _deleteAlbum(currentState.album);
     }
   }
 
   /// Gets an album detail from the [_albumRepository] and emits
-  /// [AlbumDetailLoaded] state with the albums.
+  /// [AlbumDetailSuccess] state with the albums when the detail is returned
+  /// without an error. Or it emits [AlbumDetailFailure] state with the error.
   Future<void> loadAlbumDetail(AlbumDetailQuery query) async {
     emit(const AlbumDetailLoading());
     final response = await _albumRepository.findAlbumDetail(query);
-    emit(AlbumDetailLoaded(response));
+    emit(response.fold(AlbumDetailFailure.new, AlbumDetailSuccess.new));
   }
 
   Future<void> _deleteAlbum(AlbumDetail album) async {
