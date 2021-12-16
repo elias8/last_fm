@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+import '../../../../core/core.dart';
 import '../../artist.dart';
 
 part 'artist_search_event.dart';
@@ -31,11 +31,11 @@ class ArtistSearchBloc extends Bloc<ArtistSearchEvent, ArtistSearchState> {
   ) async {
     final artistName = event.text.trim();
     if (artistName.isEmpty) {
-      emit(const ArtistSearchLoaded(Right([])));
+      emit(const ArtistSearchSuccess([]));
     } else {
       emit(const ArtistSearchLoading());
       final response = await _artistRepository.findByName(artistName);
-      emit(ArtistSearchLoaded(response));
+      emit(response.fold(ArtistSearchFailure.new, ArtistSearchSuccess.new));
     }
   }
 }

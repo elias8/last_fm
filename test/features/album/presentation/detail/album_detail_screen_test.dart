@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,9 +60,7 @@ void main() {
     testWidgets(
         'shows AlbumDetailErrorWidget when response is loaded with error',
         (tester) async {
-      final state = AlbumDetailLoaded(
-        left(const NetworkException.connection()),
-      );
+      const state = AlbumDetailFailure(NetworkException.connection());
       when(() => albumDetailCubit.state).thenReturn(state);
       when(() => albumDetailCubit.loadAlbumDetail(query))
           .thenAnswer((_) => Future.value());
@@ -83,7 +80,7 @@ void main() {
 
     testWidgets('shows AlbumDetailWidget when response is loaded with data',
         (tester) async {
-      final state = AlbumDetailLoaded(right(album));
+      final state = AlbumDetailSuccess(album);
       when(() => albumDetailCubit.state).thenReturn(state);
       when(() => albumDetailCubit.loadAlbumDetail(query))
           .thenAnswer((_) => Future.value());
@@ -104,7 +101,7 @@ void main() {
     testWidgets(
         'shows snack bar message and exits the page when album is deleted',
         (tester) async {
-      final state = AlbumDetailLoaded(right(album));
+      final state = AlbumDetailSuccess(album);
       when(() => albumDetailCubit.state).thenReturn(state);
       whenListen(albumDetailCubit, Stream.value(const AlbumDetailDeleted()));
       when(() => albumDetailCubit.loadAlbumDetail(query))

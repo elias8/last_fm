@@ -41,14 +41,14 @@ class AlbumsCubit extends Cubit<AlbumsState> {
 
   /// Gets top [Albums] of an artist with the given [name] from the
   /// [_albumRepository]. And once, the albums are found, it will emit
-  /// [TopAlbumsLoaded] state.
+  /// [TopAlbumsSuccess] state, or [TopAlbumsFailure] when an error is returned.
   ///
   /// Also, [AlbumsLoading] state will be emitted while the top albums are
   /// loaded.
   Future<void> loadTopAlbumsByArtistName(String name) async {
     emit(const AlbumsLoading());
     final response = await _albumRepository.findTopAlbumsByArtistName(name);
-    emit(TopAlbumsLoaded(response));
+    emit(response.fold(TopAlbumsFailure.new, TopAlbumsSuccess.new));
   }
 
   /// Watches for any updated [AlbumDetails] from [_albumRepository] and

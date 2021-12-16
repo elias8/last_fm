@@ -31,7 +31,7 @@ void main() {
       blocTest<AlbumDetailCubit, AlbumDetailState>(
         'should emit [ '
         'AlbumDetailLoading, '
-        'AlbumDetailLoaded, '
+        'AlbumDetailSuccess, '
         'AlbumDetailDeleted '
         '] when album is loaded and deleted',
         setUp: () {
@@ -47,7 +47,7 @@ void main() {
         },
         expect: () => [
           const AlbumDetailLoading(),
-          AlbumDetailLoaded(right(albumDetail)),
+          AlbumDetailSuccess(albumDetail),
           const AlbumDetailDeleted(),
         ],
       );
@@ -55,17 +55,17 @@ void main() {
 
     group('loadAlbumDetail', () {
       blocTest<AlbumDetailCubit, AlbumDetailState>(
-        'should emit [ AlbumDetailLoading, AlbumDetailLoaded ] when response '
-        'is returned',
+        'should emit [ AlbumDetailLoading, AlbumDetailFailure ] when error is '
+        'returned',
         setUp: () {
           when(() => albumRepository.findAlbumDetail(query)).thenAnswer(
               (_) async => left(const NetworkException.cancelled()));
         },
         build: () => albumDetailCubit,
         act: (cubit) => cubit.loadAlbumDetail(query),
-        expect: () => [
-          const AlbumDetailLoading(),
-          AlbumDetailLoaded(left(const NetworkException.cancelled())),
+        expect: () => const [
+          AlbumDetailLoading(),
+          AlbumDetailFailure(NetworkException.cancelled()),
         ],
       );
     });

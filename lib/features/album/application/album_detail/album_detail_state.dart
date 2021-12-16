@@ -15,13 +15,22 @@ class AlbumDetailLoading extends AlbumDetailState {
   const AlbumDetailLoading();
 }
 
-class AlbumDetailLoaded extends AlbumDetailState {
-  final AlbumDetailResponse response;
+class AlbumDetailSuccess extends AlbumDetailState {
+  final AlbumDetail album;
 
-  const AlbumDetailLoaded(this.response);
+  const AlbumDetailSuccess(this.album);
 
   @override
-  List<Object?> get props => [response];
+  List<Object?> get props => [album];
+}
+
+class AlbumDetailFailure extends AlbumDetailState {
+  final AlbumDetailNetworkError error;
+
+  const AlbumDetailFailure(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }
 
 class AlbumDetailDeleted extends AlbumDetailState {
