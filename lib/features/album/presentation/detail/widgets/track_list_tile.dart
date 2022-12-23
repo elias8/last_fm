@@ -26,10 +26,12 @@ class TrackListTile extends StatelessWidget {
         ),
       ),
       subtitle: Text(track.artist.name),
-      trailing: Text(
-        _formattedDuration(track.duration),
-        style: Theme.of(context).textTheme.caption,
-      ),
+      trailing: track.duration != null
+          ? Text(
+              _formattedDuration(track.duration!),
+              style: Theme.of(context).textTheme.caption,
+            )
+          : null,
     );
   }
 
