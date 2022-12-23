@@ -13,8 +13,9 @@ abstract class UrlLauncherService {
 class UrlLauncherServiceImpl implements UrlLauncherService {
   @override
   Future<void> openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     }
   }
 }

@@ -47,21 +47,18 @@ class AppRouter {
       key: state.pageKey,
       child: ErrorScreen(error: state.error),
     ),
-    redirect: (state) {
+    redirect: (context, state) {
       if (state.location == '/albums') {
         final artist = state.queryParams['artist'];
         final top = state.queryParams['top']?.toLowerCase();
         final isTopAlbums = artist != null && top == 'true';
         if (!isTopAlbums) return '/';
       }
+      return null;
     },
   );
 
   const AppRouter._();
-
-  static void setUrlPathStrategy() {
-    GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
-  }
 }
 
 class ErrorScreen extends StatelessWidget {
