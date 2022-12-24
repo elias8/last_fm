@@ -17,10 +17,10 @@ class TrackDtoAdapter extends TypeAdapter<TrackDto> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TrackDto(
+      duration: fields[3] as int?,
       name: fields[2] as String,
       rank: fields[0] as int,
       artist: fields[4] as ArtistInfoDto,
-      duration: fields[3] as int,
     );
   }
 
@@ -54,9 +54,9 @@ class TrackDtoAdapter extends TypeAdapter<TrackDto> {
 // **************************************************************************
 
 TrackDto _$TrackDtoFromJson(Map<String, dynamic> json) => TrackDto(
+      duration: json['duration'] as int?,
       name: json['name'] as String,
       rank: const TrackRankConverter()
           .fromJson(json['@attr'] as Map<String, dynamic>),
       artist: ArtistInfoDto.fromJson(json['artist'] as Map<String, dynamic>),
-      duration: json['duration'] as int,
     );

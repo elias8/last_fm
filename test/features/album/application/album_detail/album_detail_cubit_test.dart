@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$AlbumDetailCubit', () {
@@ -58,14 +58,14 @@ void main() {
         'should emit [ AlbumDetailLoading, AlbumDetailFailure ] when error is '
         'returned',
         setUp: () {
-          when(() => albumRepository.findAlbumDetail(query)).thenAnswer(
-              (_) async => left(const NetworkException.cancelled()));
+          when(() => albumRepository.findAlbumDetail(query))
+              .thenAnswer((_) async => left(const NetworkError.cancelled()));
         },
         build: () => albumDetailCubit,
         act: (cubit) => cubit.loadAlbumDetail(query),
         expect: () => const [
           AlbumDetailLoading(),
-          AlbumDetailFailure(NetworkException.cancelled()),
+          AlbumDetailFailure(NetworkError.cancelled()),
         ],
       );
     });

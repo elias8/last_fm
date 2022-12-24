@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/features.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$AlbumDetailErrorWidget', () {
@@ -28,7 +28,7 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           home: AlbumDetailErrorWidget(
-            error: const NetworkException.api(
+            error: const NetworkError.api(
               AlbumDetailError.albumNotFound,
             ),
             query: query,
@@ -55,7 +55,7 @@ void main() {
           home: BlocProvider.value(
             value: albumDetailCubit,
             child: AlbumDetailErrorWidget(
-              error: const NetworkException.server(),
+              error: const NetworkError.server(),
               query: query,
             ),
           ),

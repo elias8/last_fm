@@ -2,7 +2,7 @@ part of '../artist_search_screen.dart';
 
 /// Shows an error message by extracting the message from the given [error].
 class ArtistSearchErrorWidget extends StatelessWidget {
-  final NetworkException error;
+  final NetworkError error;
 
   @visibleForTesting
   const ArtistSearchErrorWidget({Key? key, required this.error})

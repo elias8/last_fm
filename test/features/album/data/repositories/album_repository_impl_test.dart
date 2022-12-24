@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$AlbumRepositoryImpl', () {
@@ -79,8 +79,8 @@ void main() {
         expect(response, right(albumDetail));
       });
 
-      test('should return NetworkException when error is returned', () async {
-        const error = NetworkException<AlbumDetailError>.cancelled();
+      test('should return NetworkError when error is returned', () async {
+        const error = NetworkError<AlbumDetailError>.cancelled();
         when(() => albumLocalSource.findAlbumDetail(queryDto))
             .thenAnswer((_) async => null);
         when(() => albumRemoteSource.findAlbumDetail(queryDto))

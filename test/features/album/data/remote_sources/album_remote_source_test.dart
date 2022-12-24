@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 import '../../../../helpers/dio_helpers.dart';
 import 'album_remote_source_fixture.dart';
@@ -35,7 +35,7 @@ void main() {
         expect(response.isRight(), isTrue);
       });
 
-      test('should return NetworkException when album is not found', () async {
+      test('should return NetworkError when album is not found', () async {
         when(() => dio.get('/', queryParameters: queryParam)).thenAnswer(
           (_) => throw FakeDioError.response(
             FakeResponse.notFound(albumNotFoundResponse),
@@ -46,7 +46,7 @@ void main() {
 
         expect(
           response,
-          left(const NetworkException.api(AlbumDetailError.albumNotFound)),
+          left(const NetworkError.api(AlbumDetailError.albumNotFound)),
         );
       });
     });
@@ -66,7 +66,7 @@ void main() {
       });
 
       test(
-          'should return NetworkException when artist not found error is '
+          'should return NetworkError when artist not found error is '
           'returned', () async {
         when(() => dio.get<Map>('/', queryParameters: query))
             .thenAnswer((_) async => FakeResponse.success(artistNotFound));
@@ -76,11 +76,11 @@ void main() {
 
         expect(
           response,
-          left(const NetworkException.api(TopAlbumsError.artistNotFound)),
+          left(const NetworkError.api(TopAlbumsError.artistNotFound)),
         );
       });
 
-      test('should return NetworkException when request timed out', () async {
+      test('should return NetworkError when request timed out', () async {
         when(() => dio.get<Map>('/', queryParameters: query))
             .thenThrow(FakeDioError(DioErrorType.sendTimeout));
 

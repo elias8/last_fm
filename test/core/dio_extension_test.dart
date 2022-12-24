@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/core/core.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('DioErrorExtension', () {
@@ -27,59 +28,73 @@ void main() {
 
     group('toNetworkError', () {
       test('should return a correct NetworkException type', () {
-        NetworkException _throw(Response _) => throw UnimplementedError();
+        NetworkError throwError(Response _) => throw UnimplementedError();
         expect(
           _FakeDioError(DioErrorType.connectTimeout)
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isTimeoutError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.sendTimeout)
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isTimeoutError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.receiveTimeout)
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isTimeoutError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.cancel)
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isCancellationError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.other, const SocketException(''))
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isConnectionError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.other, const FormatException())
-              .toNetWorkError(onResponse: _throw)
-              .isFormatException,
+              .toNetWorkError(onResponseError: throwError)
+              .isFormatError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.other, const HttpException(''))
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isServerError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.response, null, _FakeResponse(404))
-              .toNetWorkError(onResponse: (_) => const NetworkException.api(''))
+              .toNetWorkError(
+                onResponseError: (_) => const NetworkError.api(''),
+              )
               .isApiError,
           isTrue,
         );
         expect(
           _FakeDioError(DioErrorType.response, null, _FakeResponse(500))
-              .toNetWorkError(onResponse: _throw)
+              .toNetWorkError(onResponseError: throwError)
               .isServerError,
+          isTrue,
+        );
+        expect(
+          _FakeDioError(DioErrorType.response, null, _FakeResponse(400))
+              .toNetWorkError()
+              .isUnhandledError,
+          isTrue,
+        );
+        expect(
+          _FakeDioError(DioErrorType.response)
+              .toNetWorkError()
+              .isUnhandledError,
           isTrue,
         );
       });
@@ -92,7 +107,7 @@ void main() {
         expect(
           () => _FakeDioError(DioErrorType.response, null, _FakeResponse(404))
               .toNetWorkErrorOrThrow(),
-          throwsA(isA<UnexpectedError>()),
+          throwsA(isA<UnexpectedNetworkError>()),
         );
       });
 

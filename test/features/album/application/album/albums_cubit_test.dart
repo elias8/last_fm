@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$AlbumsCubit', () {
@@ -59,13 +59,13 @@ void main() {
         'occurred',
         setUp: () {
           when(() => albumRepository.findTopAlbumsByArtistName(artistName))
-              .thenAnswer((_) async => const Left(NetworkException.timeout()));
+              .thenAnswer((_) async => const Left(NetworkError.timeout()));
         },
         build: () => albumsCubit,
         act: (cubit) => cubit.loadTopAlbumsByArtistName(artistName),
         expect: () => const [
           AlbumsLoading(),
-          TopAlbumsFailure(NetworkException.timeout()),
+          TopAlbumsFailure(NetworkError.timeout()),
         ],
       );
     });

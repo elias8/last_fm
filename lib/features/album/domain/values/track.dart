@@ -17,13 +17,13 @@ class Track extends Equatable {
   final ArtistInfo artist;
 
   /// The duration of the track.
-  final Duration duration;
+  final Duration? duration;
 
   const Track({
+    this.duration,
     required this.rank,
     required this.name,
     required this.artist,
-    required this.duration,
   });
 
   @override

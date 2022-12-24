@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
-import 'package:last_fm/core/exceptions/exceptions.dart';
 import 'package:last_fm/features/features.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$AlbumDetailScreen', () {
@@ -60,7 +60,7 @@ void main() {
     testWidgets(
         'shows AlbumDetailErrorWidget when response is loaded with error',
         (tester) async {
-      const state = AlbumDetailFailure(NetworkException.connection());
+      const state = AlbumDetailFailure(NetworkError.connection());
       when(() => albumDetailCubit.state).thenReturn(state);
       when(() => albumDetailCubit.loadAlbumDetail(query))
           .thenAnswer((_) => Future.value());

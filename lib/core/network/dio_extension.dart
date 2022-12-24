@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-
-import '../core.dart';
+import 'package:networkx/networkx.dart';
 
 /// Helper methods for [DioError] error.
 extension DioErrorExtension on DioError {
@@ -31,44 +30,51 @@ extension DioErrorExtension on DioError {
         type == DioErrorType.receiveTimeout;
   }
 
-  /// Returns [NetworkException] if the error [type] is not
-  /// [DioErrorType.response]. Otherwise, throws [UnexpectedError].
-  ///
-  /// **Note:** Only use this method if you are sure the request is not going to
-  /// result with a response error, which is basically any response with status
-  /// code of 400 < 500.
-  NetworkException<T> toNetWorkErrorOrThrow<T>() {
-    return toNetWorkError(onResponse: (res) => throw UnexpectedError(res));
-  }
-
-  /// Returns [NetworkException] if the error [type] is not
-  /// [DioErrorType.response]. Otherwise, it will return the result of
-  /// [onResponse] callback.
-  NetworkException<T> toNetWorkError<T>({
-    required NetworkException<T> Function(Response response) onResponse,
+  /// Returns [NetworkError] if the error [type] is not [DioErrorType.response].
+  /// Otherwise, if the [onResponseError] callback is not null, it will return
+  /// the result of callback. However, it the callback is null, it will return
+  /// [NetworkError.unhandled] error.
+  NetworkError<T> toNetWorkError<T>({
+    NetworkError<T>? Function(Response response)? onResponseError,
   }) {
     switch (type) {
       case DioErrorType.connectTimeout:
       case DioErrorType.sendTimeout:
       case DioErrorType.receiveTimeout:
-        return const NetworkException.timeout();
+        return NetworkError<T>.timeout();
       case DioErrorType.response:
-        final statusCode = response!.statusCode;
-        if (statusCode != null && statusCode >= 500) {
-          return const NetworkException.server();
-        } else {
-          return onResponse(response!);
+        if (response != null) {
+          final statusCode = response!.statusCode;
+          if (statusCode != null && statusCode >= 500) {
+            return NetworkError<T>.server();
+          } else if (onResponseError != null) {
+            final error = onResponseError(response!);
+            if (error != null) return error;
+          }
         }
+        return NetworkError<T>.unhandled();
       case DioErrorType.cancel:
-        return const NetworkException.cancelled();
+        return NetworkError<T>.cancelled();
       case DioErrorType.other:
         if (isConnectionError) {
-          return const NetworkException.connection();
+          return NetworkError<T>.connection();
         } else if (isFormatError) {
-          return const NetworkException.format();
+          return NetworkError<T>.format();
         } else {
-          return const NetworkException.server();
+          return NetworkError<T>.server();
         }
     }
+  }
+
+  /// Returns [NetworkError] if the error [type] is not
+  /// [DioErrorType.response]. Otherwise, throws [UnexpectedNetworkError].
+  ///
+  /// **Note:** Only use this method if you are sure the request is not going to
+  /// result with a response error, which is basically any response with status
+  /// code of 400 < 500.
+  NetworkError<T> toNetWorkErrorOrThrow<T>() {
+    return toNetWorkError(
+      onResponseError: (it) => throw UnexpectedNetworkError(it),
+    );
   }
 }

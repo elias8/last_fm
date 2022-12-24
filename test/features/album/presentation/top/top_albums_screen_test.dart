@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/features.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$TopAlbumsScreen', () {
@@ -65,7 +65,7 @@ void main() {
 
     testWidgets('shows TopAlbumsErrorWidget when response is loaded with error',
         (tester) async {
-      const state = TopAlbumsFailure(NetworkException.connection());
+      const state = TopAlbumsFailure(NetworkError.connection());
       when(() => albumsCubit.state).thenReturn(state);
       when(() => albumsCubit.loadTopAlbumsByArtistName(artistName))
           .thenAnswer((_) => Future.value());

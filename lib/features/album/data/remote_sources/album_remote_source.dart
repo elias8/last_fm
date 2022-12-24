@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:networkx/networkx.dart';
 
 import '../../../../core/core.dart';
 import '../../album.dart';
@@ -36,7 +37,7 @@ class AlbumRemoteSourceImpl implements AlbumRemoteSource {
       return right(AlbumDetailDto.fromJson(data['album']));
     } on DioError catch (error) {
       return left(
-        error.toNetWorkError(onResponse: _mapAlbumDetailResponseError),
+        error.toNetWorkError(onResponseError: _mapAlbumDetailResponseError),
       );
     }
   }
@@ -53,16 +54,16 @@ class AlbumRemoteSourceImpl implements AlbumRemoteSource {
         final albums = List<Map<String, dynamic>>.from(topAlbums['album']);
         return right(albums.map(AlbumDto.fromJson).toList());
       } else {
-        return const Left(NetworkException.api(TopAlbumsError.artistNotFound));
+        return const Left(NetworkError.api(TopAlbumsError.artistNotFound));
       }
     } on DioError catch (error) {
       return left(error.toNetWorkErrorOrThrow());
     }
   }
 
-  AlbumDetailNetworkError _mapAlbumDetailResponseError(Response response) {
+  AlbumDetailNetworkError? _mapAlbumDetailResponseError(Response response) {
     return response.statusCode == 404
-        ? const NetworkException.api(AlbumDetailError.albumNotFound)
-        : const NetworkException.server();
+        ? const NetworkError.api(AlbumDetailError.albumNotFound)
+        : null;
   }
 }

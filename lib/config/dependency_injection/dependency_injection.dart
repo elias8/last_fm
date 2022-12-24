@@ -10,7 +10,7 @@ final getIt = GetIt.instance;
 @InjectableInit(initializerName: r'$registerDependencies')
 Future<void> registerDependencies() async {
   _registerHiveTypeAdapters();
-  await $registerDependencies(getIt);
+  await getIt.$registerDependencies();
 }
 
 void _registerHiveTypeAdapters() {

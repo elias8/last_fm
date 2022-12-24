@@ -8,9 +8,6 @@ import 'config/config.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   await registerDependencies();
-  AppRouter.setUrlPathStrategy();
-  BlocOverrides.runZoned(
-    () => runApp(const Application()),
-    blocObserver: AppBlocObserver(),
-  );
+  Bloc.observer = AppBlocObserver();
+  runApp(const Application());
 }

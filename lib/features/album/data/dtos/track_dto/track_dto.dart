@@ -16,15 +16,15 @@ class TrackDto {
   @HiveField(2)
   final String name;
   @HiveField(3)
-  final int duration;
+  final int? duration;
   @HiveField(4)
   final ArtistInfoDto artist;
 
   const TrackDto({
+    this.duration,
     required this.name,
     required this.rank,
     required this.artist,
-    required this.duration,
   });
 
   factory TrackDto.fromJson(Map<String, dynamic> json) =>
@@ -35,7 +35,7 @@ class TrackDto {
       rank: rank,
       name: name,
       artist: artist.toEntity(),
-      duration: Duration(seconds: duration),
+      duration: duration != null ? Duration(seconds: duration!) : null,
     );
   }
 }

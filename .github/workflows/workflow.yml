@@ -6,8 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1.5.3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - run: flutter --version
 
       - name: Install Dependencies
         run: flutter packages get
@@ -20,11 +24,11 @@ jobs:
 
       - name: Run Tests
         run: |
-          pub global activate remove_from_coverage
+          flutter pub global activate remove_from_coverage
           export PATH=$PATH:$HOME/.pub-cache/bin
           flutter test --no-pub --coverage --test-randomize-ordering-seed random
-          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
-          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.confg.dart$'
+          flutter pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
+          flutter pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.confg.dart$'
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
