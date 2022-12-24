@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/features.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$ArtistSearchResult', () {
@@ -91,7 +91,7 @@ void main() {
     });
 
     testWidgets('shows error message at error loaded state', (tester) async {
-      const response = NetworkException.cancelled();
+      const response = NetworkError.cancelled();
       when(() => artistSearchBloc.state)
           .thenReturn(const ArtistSearchFailure(response));
       await tester.pumpWidget(

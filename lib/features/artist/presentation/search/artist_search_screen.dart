@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:networkx/networkx.dart';
 
 import '../../../../config/config.dart';
-import '../../../../core/core.dart';
 import '../../../features.dart';
 
 part 'widgets/artist_list_tile.dart';

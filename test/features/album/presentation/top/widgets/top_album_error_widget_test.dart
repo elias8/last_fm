@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:last_fm/config/config.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/album/album.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$TopAlbumsErrorWidget', () {
@@ -28,7 +28,7 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           home: TopAlbumsErrorWidget(
-            error: NetworkException.api(TopAlbumsError.artistNotFound),
+            error: NetworkError.api(TopAlbumsError.artistNotFound),
             artistName: artistName,
           ),
         ),
@@ -53,7 +53,7 @@ void main() {
           home: BlocProvider.value(
             value: albumsCubit,
             child: const TopAlbumsErrorWidget(
-              error: NetworkException.server(),
+              error: NetworkError.server(),
               artistName: artistName,
             ),
           ),

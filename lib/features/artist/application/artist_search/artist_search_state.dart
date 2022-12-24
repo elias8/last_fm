@@ -25,7 +25,7 @@ class ArtistSearchSuccess extends ArtistSearchState {
 }
 
 class ArtistSearchFailure extends ArtistSearchState {
-  final NetworkException<void> error;
+  final EmptyNetworkError error;
 
   const ArtistSearchFailure(this.error);
 

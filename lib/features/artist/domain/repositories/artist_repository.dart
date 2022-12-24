@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:networkx/networkx.dart';
 
-import '../../../../core/core.dart';
 import '../../artist.dart';
 
-typedef ArtistSearchResponse = Either<NetworkException<void>, Artists>;
+typedef ArtistSearchResponse = Either<EmptyNetworkError, Artists>;
 
 /// A repository responsible for storing and retrieving [Artist]/s data to/from
 /// different data sources.

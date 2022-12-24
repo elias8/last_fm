@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:networkx/networkx.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import '../../../../core/core.dart';
 import '../../artist.dart';
 
 part 'artist_search_event.dart';

@@ -29,7 +29,7 @@ void main() {
         expect(response.isRight(), isTrue);
       });
 
-      test('should return NetworkException when request is not successful',
+      test('should return NetworkError when request is not successful',
           () async {
         when(() => dio.get<Map>('/', queryParameters: query))
             .thenThrow(FakeDioError(DioErrorType.cancel));

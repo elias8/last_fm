@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:networkx/networkx.dart';
 
 import '../../../../core/core.dart';
 import '../data.dart';
 
-typedef ArtistSearchRemoteResponse
-    = Either<NetworkException<void>, ArtistDtoList>;
+typedef ArtistSearchRemoteResponse = Either<EmptyNetworkError, ArtistDtoList>;
 
 /// A class responsible for fetching artist data from the backend API using an
 /// Http call.

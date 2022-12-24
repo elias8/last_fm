@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_fm/core/core.dart';
 import 'package:last_fm/features/features.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:networkx/networkx.dart';
 
 void main() {
   group('$ArtistSearchBloc', () {
@@ -39,13 +39,13 @@ void main() {
         'should emit [ ArtistSearchLoading, ArtistSearchSuccess ] when error is'
         ' returned',
         setUp: () => when(() => artistRepository.findByName(text))
-            .thenAnswer((_) async => left(const NetworkException.format())),
+            .thenAnswer((_) async => left(const NetworkError.format())),
         build: () => artistSearchBloc,
         act: (bloc) => bloc.add(const ArtistSearchTextChanged(text)),
         wait: const Duration(milliseconds: 300),
         expect: () => const [
           ArtistSearchLoading(),
-          ArtistSearchFailure(NetworkException.format()),
+          ArtistSearchFailure(NetworkError.format()),
         ],
       );
 

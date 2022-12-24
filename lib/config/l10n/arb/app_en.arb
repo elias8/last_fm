@@ -88,7 +88,7 @@
   "@albumNotFound": {
     "description": "Text shown on the album detail screen when album is not found."
   },
-  "networkErrorMessage": "{ error, select, cancelled {Request cancelled.} connection {Please check your internet connection and try again.} custom {Something went wrong. Try again.} format {Something went wrong. Try again.} server {Server error. Try again later.} timeout {Connection timeout. Please check your internet connection.}}",
+  "networkErrorMessage": "{ error, select, cancelled {Request cancelled.} connection {Please check your internet connection and try again.} custom {Something went wrong. Try again.} format {Something went wrong. Try again.} server {Server error. Try again later.} timeout {Connection timeout. Please check your internet connection.} unhandled {Something went wrong.} other {Something went wrong. Try again.}}",
   "@networkErrorMessage": {
     "description": "Texts shown on different screens for network error.",
     "placeholders": {

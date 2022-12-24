@@ -1,18 +1,18 @@
 import 'package:dartz/dartz.dart';
+import 'package:networkx/networkx.dart';
 
-import '../../../../core/core.dart';
 import '../../../album/album.dart';
 
 /// An error that is returned from a remote data source when requesting for
 /// an album detail.
-typedef AlbumDetailNetworkError = NetworkException<AlbumDetailError>;
+typedef AlbumDetailNetworkError = NetworkError<AlbumDetailError>;
 
 /// A response returned when [AlbumDetail] is requested.
 typedef AlbumDetailResponse = Either<AlbumDetailNetworkError, AlbumDetail>;
 
 /// An error that is returned from a remote data source when requesting for
 /// top albums of an artist.
-typedef TopAlbumsNetworkError = NetworkException<TopAlbumsError>;
+typedef TopAlbumsNetworkError = NetworkError<TopAlbumsError>;
 
 /// A response returned when top [Albums] are requested.
 typedef TopAlbumsResponse = Either<TopAlbumsNetworkError, Albums>;
